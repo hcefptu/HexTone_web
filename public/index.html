@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEX TONE — Curated Guitars & Soundscapes</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts chuẩn theo mẫu: Playfair Display (Heading) & Plus Jakarta Sans (Body/Logo/Menu) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#0E1013',
+                        smoked: '#17191E',
+                        borderLine: '#262A33',
+                        amberGlow: '#C89B58',
+                        amberHover: '#DFB16E',
+                        parchment: '#F2F0EB',
+                        steelMuted: '#868C96'
+                    },
+                    fontFamily: {
+                        // Font Serif thanh lịch, sắc nét như trong ảnh
+                        editorial: ['"Playfair Display"', 'Georgia', 'serif'],
+                        // Font Sans-serif hiện đại, tối giản
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0E1013;
+            color: #F2F0EB;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0E1013;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #262A33;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C89B58;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased selection:bg-amberGlow selection:text-obsidian">
+
+    <!-- Top Announcement Bar -->
+    <div
+        class="border-b border-borderLine py-2.5 text-center text-[11px] tracking-[0.2em] text-steelMuted uppercase font-light">
+        Free studio-grade calibration & worldwide insured transit
+    </div>
+
+    <!-- Header Navigation: Chuẩn bố cục Logo & Menu như ảnh -->
+    <header class="sticky top-0 z-40 bg-obsidian/90 backdrop-blur-md border-b border-borderLine">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+
+            <!-- Menu bên trái: Dạng Title Case tinh tế (Shop, About, Vault) -->
+            <nav class="hidden md:flex space-x-8 text-[13px] font-medium tracking-wide text-parchment/90">
+                <a href="#vault" class="hover:text-amberGlow transition">Shop</a>
+                <a href="#vault" class="hover:text-amberGlow transition">Vault</a>
+                <a href="#about" class="hover:text-amberGlow transition">About</a>
+            </nav>
+
+            <!-- Logo giữa: Sans-serif in hoa dãn chữ rộng chuẩn thương hiệu "FLOW" -->
+            <a href="#"
+                class="font-sans font-medium text-lg md:text-xl tracking-[0.35em] text-parchment hover:text-amberGlow transition uppercase">
+                HEX TONE
+            </a>
+
+            <!-- Menu bên phải: Currency & Giỏ hàng -->
+            <div class="flex items-center space-x-6 text-[13px] font-light">
+                <span class="hidden sm:inline text-steelMuted text-xs">USD ($)</span>
+                <button id="cart-toggle"
+                    class="relative text-parchment hover:text-amberGlow transition flex items-center gap-2">
+                    <span class="text-xs uppercase tracking-widest font-medium">Bag</span>
+                    <span id="cart-count-badge"
+                        class="bg-amberGlow text-obsidian px-1.5 py-0.5 rounded-full text-[10px] font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section: Tiêu đề lớn dùng Playfair Display -->
+    <section class="py-28 px-6 border-b border-borderLine relative overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center">
+            <span class="text-amberGlow text-xs uppercase tracking-[0.25em] font-medium block mb-4">The Studio
+                Vault</span>
+
+            <!-- Headline với font serif sang trọng đúng mẫu ảnh -->
+            <h1 id="hero-headline"
+                class="font-editorial text-5xl md:text-7xl lg:text-8xl font-normal tracking-tight text-parchment leading-[1.08] mb-8">
+                Pure resonance.<br><span class="italic font-light">Obsidian precision.</span>
+            </h1>
+
+            <p id="hero-subline"
+                class="text-steelMuted text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed mb-10">
+                Loading curator notes...
+            </p>
+
+            <!-- Nút bấm SHOP NOW phong cách mẫu -->
+            <a href="#vault"
+                class="inline-flex items-center gap-2 bg-white text-black font-semibold px-8 py-3.5 text-xs uppercase tracking-[0.2em] rounded-full border border-transparent transition-all duration-300 hover:border-white hover:shadow-[0_0_20px_rgba(255,255,255,0.7)] hover:scale-[1.02]">
+                <span>Shop Now</span>
+                <span>&rarr;</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Product Vault Section -->
+    <section id="vault" class="py-20 max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-borderLine pb-6 gap-6">
+            <div>
+                <h2 class="font-editorial text-4xl md:text-5xl text-parchment font-normal">The Instruments</h2>
+                <p class="text-steelMuted text-xs tracking-widest uppercase font-light mt-2">Curated Electric & Acoustic
+                    Series</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap items-center gap-4 text-xs">
+                <div class="flex border border-borderLine rounded-sm p-1 bg-smoked">
+                    <button class="filter-category px-3.5 py-1.5 rounded-sm transition text-amberGlow font-medium"
+                        data-cat="all">All</button>
+                    <button
+                        class="filter-category px-3.5 py-1.5 rounded-sm transition text-steelMuted hover:text-parchment"
+                        data-cat="Electric">Electric</button>
+                    <button
+                        class="filter-category px-3.5 py-1.5 rounded-sm transition text-steelMuted hover:text-parchment"
+                        data-cat="Acoustic">Acoustic</button>
+                </div>
+
+                <select id="filter-brand"
+                    class="bg-smoked border border-borderLine text-parchment text-xs px-3 py-2 rounded-sm focus:outline-none focus:border-amberGlow">
+                    <option value="all">All Brands</option>
+                    <option value="Ibanez">Ibanez</option>
+                    <option value="Fender">Fender</option>
+                    <option value="Gibson">Gibson</option>
+                    <option value="Taylor">Taylor</option>
+                    <option value="Martin">Martin</option>
+                    <option value="PRS">PRS</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Sản phẩm sẽ được nạp từ app.js -->
+        </div>
+    </section>
+
+    <!-- About / Philosophy Section -->
+    <section id="about" class="border-t border-borderLine bg-smoked/40 py-28 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="text-xs uppercase tracking-[0.3em] text-amberGlow block mb-3 font-medium">Philosophy</span>
+            <h2 id="about-title" class="font-editorial text-4xl md:text-5xl text-parchment font-normal mb-8">Hex Tone
+                Instruments</h2>
+            <p id="about-text"
+                class="text-steelMuted leading-relaxed font-light text-base md:text-lg mb-14 max-w-2xl mx-auto">
+                Loading atelier philosophy...
+            </p>
+
+            <div id="about-stats" class="grid grid-cols-3 gap-6 border-t border-borderLine pt-12">
+                <!-- Stats từ API -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-borderLine py-12 px-6 text-center text-xs text-steelMuted font-light">
+        <p class="tracking-[0.25em] uppercase mb-2">HEX TONE © 2026 — Pure Tone Engineering</p>
+        <p class="text-[11px] text-steelMuted/60 tracking-wider">Cloud Native Demo Web Application</p>
+    </footer>
+
+    <!-- ==================== CART DRAWER ==================== -->
+    <div id="cart-drawer-backdrop"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+    </div>
+
+    <div id="cart-drawer"
+        class="fixed top-0 right-0 w-full max-w-md h-full bg-smoked border-l border-borderLine z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="p-6 border-b border-borderLine flex items-center justify-between">
+            <h3 class="font-editorial text-2xl text-parchment">Your Selection</h3>
+            <button id="cart-close" class="text-steelMuted hover:text-parchment text-lg p-1">✕</button>
+        </div>
+
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4 font-light">
+            <p class="text-steelMuted text-xs text-center py-10">Your bag is currently empty.</p>
+        </div>
+
+        <div class="p-6 border-t border-borderLine bg-obsidian">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-xs uppercase tracking-widest text-steelMuted">Total</span>
+                <span id="cart-total-price" class="text-xl font-editorial text-amberGlow">$0.00</span>
+            </div>
+            <button onclick="alert('Demo Cloud Checkout Triggered!')"
+                class="w-full bg-amberGlow text-obsidian py-3.5 text-xs uppercase tracking-[0.2em] font-semibold hover:bg-amberHover transition">
+                Checkout
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

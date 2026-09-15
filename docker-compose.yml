@@ -1,0 +1,25 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hex-tone-web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+    volumes:
+      # 1. Mount toàn bộ code thư mục hiện tại vào /app trong container
+      - ./:/app
+      # 2. Anonymous volume để giữ nguyên thư viện đã cài trong container (tránh bị máy host ghi đè)
+      - /app/node_modules
+    # Node 20 có cờ --watch giúp tự restart backend khi sửa server.js
+    command: node --watch server.js
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
