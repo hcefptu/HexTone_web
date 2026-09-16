@@ -127,6 +127,6 @@ app.get('/api/about', (req, res) => {
 });
 
 // Chạy server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`>>> Hex Tone server is running at: http://localhost:${PORT}`);
 });
