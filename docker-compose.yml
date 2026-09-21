@@ -1,4 +1,19 @@
 services:
+  oracle-db:
+    image: gvenzl/oracle-free:slim
+    container_name: hex-tone-oracle
+    restart: always
+    environment:
+      - ORACLE_PASSWORD=HexTonePass123!
+      - APP_USER=hextone_user
+      - APP_USER_PASSWORD=HexTonePass123!
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+    networks:
+      - app-network
+
   web:
     build:
       context: .
@@ -10,15 +25,20 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=development
+      - DB_USER=hextone_user
+      - DB_PASSWORD=HexTonePass123!
+      - DB_CONNECT_STRING=oracle-db:1521/FREEPDB1
+    depends_on:
+      - oracle-db
     volumes:
-      # 1. Mount toàn bộ code thư mục hiện tại vào /app trong container
       - ./:/app
-      # 2. Anonymous volume để giữ nguyên thư viện đã cài trong container (tránh bị máy host ghi đè)
       - /app/node_modules
-    # Node 20 có cờ --watch giúp tự restart backend khi sửa server.js
-    command: node --watch server.js
+    command: node server.js
     networks:
       - app-network
+
+volumes:
+  oracle_data:
 
 networks:
   app-network:

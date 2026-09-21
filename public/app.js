@@ -12,7 +12,7 @@ function playGuitarTone(frequencies) {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
-  
+
   frequencies.forEach((freq, idx) => {
     setTimeout(() => {
       const osc = audioCtx.createOscillator();
@@ -66,48 +66,79 @@ function renderProducts() {
     return;
   }
 
-  container.innerHTML = state.products.map(p => `
-    <div class="group bg-smoked border border-borderLine hover:border-amberGlow/50 transition-all duration-300 flex flex-col">
-      <!-- Ảnh sản phẩm -->
-      <div class="relative overflow-hidden aspect-[4/5] bg-obsidian">
-        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100">
-        <span class="absolute top-3 left-3 bg-obsidian/80 border border-borderLine text-amberGlow text-[10px] tracking-wider uppercase px-2 py-1">
-          ${p.tag}
-        </span>
-        
-        <!-- Nút nghe âm sắc (Web Audio API) -->
-        <button onclick='auditionTone("${p.id}")' class="absolute bottom-3 right-3 bg-obsidian/90 hover:bg-amberGlow hover:text-obsidian text-parchment text-[11px] px-3 py-1.5 uppercase tracking-widest border border-borderLine transition flex items-center gap-1.5">
-          <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          Audition Tone
-        </button>
-      </div>
+  container.innerHTML = state.products.map(p => {
+    // 1. Nhận diện link YouTube linh hoạt (bắt cả youtubeUrl, youtube_url lẫn YOUTUBE_URL từ Oracle)
+    const ytLink = p.youtubeUrl || p.youtube_url || p.YOUTUBE_URL;
 
-      <!-- Thông tin sản phẩm -->
-      <div class="p-6 flex-1 flex flex-col justify-between">
-        <div>
-          <div class="flex justify-between text-xs text-steelMuted uppercase tracking-wider mb-2">
-            <span>${p.brand}</span>
-            <span>${p.category}</span>
-          </div>
-          <h3 class="font-editorial text-xl text-parchment mb-3">${p.name}</h3>
-          <p class="text-xs text-steelMuted font-light leading-relaxed mb-4">
-            Pickups: ${p.specs.pickups} • Top: ${p.specs.top}
-          </p>
-        </div>
+    // 2. Parse specs an toàn (xử lý cả khi specs là chuỗi JSON hoặc Object)
+    let specsObj = {};
+    try {
+      specsObj = typeof p.specs === 'string' ? JSON.parse(p.specs) : (p.specs || {});
+    } catch (e) {
+      specsObj = p.specs || {};
+    }
+    const pickups = specsObj.pickups || 'Custom Voiced';
+    const top = specsObj.top || 'Selected Wood';
 
-        <div class="pt-4 border-t border-borderLine flex items-center justify-between">
-          <span class="font-editorial text-lg text-amberGlow">$${p.price.toLocaleString()}</span>
-          <button onclick='addToCart("${p.id}")' class="text-xs uppercase tracking-widest text-parchment hover:text-amberGlow transition font-medium">
-            + Add to Bag
+    // 3. Danh sách các cây đàn có ảnh gốc nằm ngang cần xoay đứng (thêm cả cây Ibanez thứ 2)
+    const isHorizontal = ['hex-ibanez-a528', 'hex-schecter-syn', 'hex-jackson-dk2', 'hex-esp-alexi'].includes(p.id);
+
+    return `
+      <div class="group bg-smoked border border-borderLine hover:border-amberGlow/50 transition-all duration-300 flex flex-col">
+        <!-- Khung ảnh sản phẩm -->
+        <div class="relative overflow-hidden aspect-[4/5] bg-obsidian flex items-center justify-center p-3">
+          <img src="${p.image}" alt="${p.name}" 
+               class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 ${
+                 isHorizontal ? '-rotate-90 scale-125' : ''
+               }">
+          
+          <span class="absolute top-3 left-3 bg-obsidian/80 border border-borderLine text-amberGlow text-[10px] tracking-wider uppercase px-2 py-1 z-10">
+            ${p.tag}
+          </span>
+          
+          <!-- NÚT XEM VIDEO DEMO YOUTUBE (Góc trên bên phải) -->
+          ${ytLink ? `
+            <a href="${ytLink}" target="_blank" rel="noopener noreferrer" 
+               class="absolute top-3 right-3 bg-red-600/90 hover:bg-red-500 text-white text-[10px] px-2.5 py-1 uppercase tracking-wider transition flex items-center gap-1 rounded-sm shadow z-20">
+              <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+              Video Demo
+            </a>
+          ` : ''}
+
+          <!-- Nút Audition Tone (Góc dưới bên phải) -->
+          <button onclick='auditionTone("${p.id}")' class="absolute bottom-3 right-3 bg-obsidian/90 hover:bg-amberGlow hover:text-obsidian text-parchment text-[11px] px-3 py-1.5 uppercase tracking-widest border border-borderLine transition flex items-center gap-1.5 z-10">
+            <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            Audition Tone
           </button>
         </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="p-6 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between text-xs text-steelMuted uppercase tracking-wider mb-2">
+              <span>${p.brand}</span>
+              <span>${p.category}</span>
+            </div>
+            <h3 class="font-editorial text-xl text-parchment mb-3">${p.name}</h3>
+            <p class="text-xs text-steelMuted font-light leading-relaxed mb-4">
+              Pickups: ${pickups} • Top: ${top}
+            </p>
+          </div>
+
+          <div class="pt-4 border-t border-borderLine flex items-center justify-between">
+            <span class="font-editorial text-lg text-amberGlow">$${p.price.toLocaleString()}</span>
+            <button onclick='addToCart("${p.id}")' class="text-xs uppercase tracking-widest text-parchment hover:text-amberGlow transition font-medium">
+              + Add to Bag
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 // Hàm gảy đàn thử nghiệm
-window.auditionTone = function(productId) {
+window.auditionTone = function (productId) {
   const p = state.products.find(item => item.id === productId);
   if (p && p.toneFreq) {
     playGuitarTone(p.toneFreq);
@@ -132,7 +163,7 @@ document.getElementById('cart-toggle').addEventListener('click', () => toggleDra
 document.getElementById('cart-close').addEventListener('click', () => toggleDrawer(false));
 backdrop.addEventListener('click', () => toggleDrawer(false));
 
-window.addToCart = function(id) {
+window.addToCart = function (id) {
   const guitar = state.products.find(p => p.id === id);
   if (!guitar) return;
 
@@ -179,7 +210,7 @@ function updateCartUI() {
   totalPrice.innerText = `$${total.toLocaleString()}`;
 }
 
-window.removeFromCart = function(index) {
+window.removeFromCart = function (index) {
   state.cart.splice(index, 1);
   updateCartUI();
 };
