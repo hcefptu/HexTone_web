@@ -98,74 +98,7 @@ const seedProducts = [
 ];
 
 // Initialize Database Pool and PRODUCTS schema
-async function initDatabase() {
-  let pool;
-  let retries = 10;
-  while (retries > 0) {
-    try {
-      pool = await oracledb.createPool({
-        ...dbConfig,
-        poolMin: 2,
-        poolMax: 10,
-        poolIncrement: 1
-      });
-      console.log(">>> Successfully connected to Oracle Database!");
-      break;
-    } catch (err) {
-      console.log(`>>> Waiting for Oracle Database to be ready... (${retries} attempts remaining)`);
-      retries -= 1;
-      await new Promise(r => setTimeout(r, 6000));
-    }
-  }
-
-  if (!pool) return;
-
-  let conn;
-  try {
-    conn = await pool.getConnection();
-
-    // Create PRODUCTS table if not exists
-    await conn.execute(`
-      BEGIN
-        EXECUTE IMMEDIATE '
-          CREATE TABLE PRODUCTS (
-            ID VARCHAR2(50) PRIMARY KEY,
-            NAME VARCHAR2(150) NOT NULL,
-            BRAND VARCHAR2(50) NOT NULL,
-            CATEGORY VARCHAR2(50) NOT NULL,
-            PRICE NUMBER(10, 2) NOT NULL,
-            TONE_FREQ VARCHAR2(200),
-            IMAGE VARCHAR2(500),
-            SPECS VARCHAR2(1000),
-            TAG VARCHAR2(50),
-            YOUTUBE_URL VARCHAR2(500)
-          )
-        ';
-      EXCEPTION
-        WHEN OTHERS THEN
-          IF SQLCODE != -955 THEN RAISE; END IF;
-      END;
-    `);
-
-    // Seed data if table is currently empty
-    const countCheck = await conn.execute(`SELECT COUNT(*) AS CNT FROM PRODUCTS`);
-    if (countCheck.rows[0].CNT === 0) {
-      console.log(">>> Seeding 6 curated instruments into Oracle Database...");
-      for (const p of seedProducts) {
-        await conn.execute(
-          `INSERT INTO PRODUCTS (ID, NAME, BRAND, CATEGORY, PRICE, TONE_FREQ, IMAGE, SPECS, TAG, YOUTUBE_URL)
-           VALUES (:id, :name, :brand, :category, :price, :toneFreq, :image, :specs, :tag, :youtube_url)`,
-          p
-        );
-      }
-      console.log(">>> Seeding completed successfully!");
-    }
-  } catch (e) {
-    console.error("Schema Init Error:", e);
-  } finally {
-    if (conn) await conn.close();
-  }
-}
+async function initDatabase() {x}
 
 // 1. API Home: Top featured instruments
 app.get('/api/home', async (req, res) => {
